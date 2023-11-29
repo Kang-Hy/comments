@@ -3,6 +3,7 @@ package com.khy.controller;
 
 import com.khy.dto.Result;
 import com.khy.service.IFollowService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -14,6 +15,7 @@ import javax.annotation.Resource;
  *
  * @author khy
  */
+@Slf4j
 @RestController
 @RequestMapping("/follow")
 public class FollowController {
@@ -23,6 +25,7 @@ public class FollowController {
 
     @PutMapping("/{id}/{isFollow}")
     public Result follow(@PathVariable("id") Long followUserId, @PathVariable("isFollow") Boolean isFollow) {
+        log.info("1");
         return followService.follow(followUserId, isFollow);
     }
 
