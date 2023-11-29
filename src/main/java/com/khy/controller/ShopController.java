@@ -7,6 +7,7 @@ import com.khy.dto.Result;
 import com.khy.entity.Shop;
 import com.khy.service.IShopService;
 import com.khy.utils.SystemConstants;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,6 +19,7 @@ import javax.annotation.Resource;
  *
  * @author khy
  */
+@Slf4j
 @RestController
 @RequestMapping("/shop")
 public class ShopController {
@@ -42,6 +44,7 @@ public class ShopController {
      */
     @PostMapping
     public Result saveShop(@RequestBody Shop shop) {
+        log.info("local");
         // 写入数据库
         shopService.save(shop);
         // 返回店铺id
