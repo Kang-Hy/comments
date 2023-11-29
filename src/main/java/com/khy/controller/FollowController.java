@@ -25,7 +25,6 @@ public class FollowController {
 
     @PutMapping("/{id}/{isFollow}")
     public Result follow(@PathVariable("id") Long followUserId, @PathVariable("isFollow") Boolean isFollow) {
-        log.info("123local");
         return followService.follow(followUserId, isFollow);
     }
 
