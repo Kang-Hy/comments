@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
-
+@Slf4j
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
@@ -29,6 +29,7 @@ public class MvcConfig implements WebMvcConfigurer {
                         "/user/login"
                 ).order(1);
         // token刷新的拦截器
+        log.info("2");
         registry.addInterceptor(new RefreshTokenInterceptor(stringRedisTemplate)).addPathPatterns("/**").order(0);
     }
 }
