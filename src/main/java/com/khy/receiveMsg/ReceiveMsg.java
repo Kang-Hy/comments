@@ -2,7 +2,9 @@ package com.khy.receiveMsg;
 
 import cn.hutool.json.JSONUtil;
 import com.khy.entity.VoucherOrder;
+import com.khy.service.ISeckillVoucherService;
 import com.khy.service.IVoucherOrderService;
+import com.khy.service.IVoucherService;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -27,7 +29,10 @@ import java.io.IOException;
 @Slf4j
 public class ReceiveMsg {
     @Autowired
-    private IVoucherOrderService iVoucherOrderService;
+    private IVoucherOrderService voucherOrderService;
+    @Autowired
+    private ISeckillVoucherService seckillVoucherService;
+
 
     @RabbitListener(queues = {"queue.voucheroder.a1"})
     public void receiveMsg(Message message, Channel channel) throws IOException {
@@ -38,7 +43,11 @@ public class ReceiveMsg {
             byte[] body = message.getBody();
             VoucherOrder bean = JSONUtil.toBean(new String(body), VoucherOrder.class);
             log.info("接收到的消息为{}",bean);
-            iVoucherOrderService.save(bean);
+            if(voucherOrderService.save(bean)){
+                seckillVoucherService.update()
+                    .setSql("stock = stock - 1") // set stock = stock - 1
+                    .update();
+            }
             channel.basicAck(deliveryTag,false);//第二个参数 false一次只确认当前一条
         }catch (Exception e){
             log.error("接收消息出现问题"+e.getMessage());
